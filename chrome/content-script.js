@@ -8,6 +8,43 @@
     return location.origin + location.pathname;
   }
 
+  function getElementLocator(element) {
+    var parts = [];
+    var current = element;
+
+    while (current && current.nodeType === 1 && current !== document.body) {
+      var tag = current.tagName.toLowerCase();
+      var part = tag;
+      var checkpointId = current.getAttribute("data-checkpoint-id");
+
+      if (current.id) {
+        part += "#" + current.id;
+        parts.unshift(part);
+        break;
+      }
+
+      if (checkpointId) {
+        part += "[data-checkpoint-id=\"" + checkpointId + "\"]";
+      }
+
+      var siblingIndex = 1;
+      var sibling = current;
+
+      while (sibling.previousElementSibling) {
+        sibling = sibling.previousElementSibling;
+        if (sibling.tagName === current.tagName) {
+          siblingIndex += 1;
+        }
+      }
+
+      part += ":nth-of-type(" + siblingIndex + ")";
+      parts.unshift(part);
+      current = current.parentElement;
+    }
+
+    return parts.join(">");
+  }
+
   function getStorage() {
     try {
       return window.top.localStorage;
@@ -18,13 +55,14 @@
 
   function getTextareaKey(textarea) {
     var pageKey = getPageKey();
+    var locator = getElementLocator(textarea);
     var id = textarea.id || "";
     var name = textarea.name || "";
     var placeholder = textarea.placeholder || "";
     var label = textarea.getAttribute("aria-label") || "";
     var className = textarea.className || "";
 
-    return [STORAGE_PREFIX, pageKey, id, name, placeholder, label, className].join("|");
+    return [STORAGE_PREFIX, pageKey, locator, id, name, placeholder, label, className].join("|");
   }
 
   function getSavedEntry(storage, key) {
@@ -65,7 +103,6 @@
       return;
     }
 
-    textarea.focus();
     textarea.value = value;
     textarea.dispatchEvent(new Event("input", { bubbles: true }));
     textarea.dispatchEvent(new Event("change", { bubbles: true }));
