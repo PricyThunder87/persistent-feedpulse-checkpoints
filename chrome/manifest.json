@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Feedpulse Textarea Saver",
+  "version": "1.0.0",
+  "description": "Automatically restores textarea content on Feedpulse pages after refresh.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://fhict.instructure.com/courses/*/external_tools/1067*",
+        "*://feedpulse.ai/*",
+        "*://*.feedpulse.ai/*",
+        "*://feedpulse.io/*",
+        "*://*.feedpulse.io/*",
+        "*://feedpulse.com/*",
+        "*://*.feedpulse.com/*"
+      ],
+      "js": [
+        "content-script.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ]
+}
