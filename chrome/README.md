@@ -15,6 +15,21 @@ Includes:
 3. Click **Load unpacked**.
 4. Select this folder: `chrome/`
 
+## Keep It Installed Permanently (Personal Use)
+
+For personal use, Chrome can keep an unpacked extension installed across browser restarts.
+
+1. Open `chrome://extensions`.
+2. Enable **Developer mode**.
+3. Click **Load unpacked** and select `chrome/`.
+4. Keep **Developer mode** enabled.
+
+The extension will remain installed in your profile after restart unless you remove it manually.
+
+### Important note
+
+Unpacked extensions are local/dev installs. For distribution to others, publish the extension package through the Chrome Web Store.
+
 ## Test
 
 1. Open your Canvas Feedpulse tool page.
